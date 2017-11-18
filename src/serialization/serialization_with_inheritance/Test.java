@@ -1,4 +1,4 @@
-package serialization;
+package serialization.serialization_with_inheritance;
 
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -8,11 +8,8 @@ import java.io.ObjectOutputStream;
 class Test {
 	public static void main(String args[]) {
 		
-		Address address = new Address();
-		address.setCity("citry");
-		Student student = new Student();
-		student.setName("rakesh");
-		student.setAddress(address);
+		Address address = new Address("fb");
+		Student student = new Student("rakesh",address);
 		
 		try {
 			FileOutputStream fis = new FileOutputStream("employee.ser");
