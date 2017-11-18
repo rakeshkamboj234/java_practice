@@ -1,0 +1,93 @@
+@ElementCollection
+@JoinTable(name="User_Address",
+			joinColumns=@JoinColumn(name="User_ID")
+		)
+@GenericGenerator(name="hilo-gen", strategy="hilo")
+@CollectionId(columns = { @Column (name="Address_ID")}, generator = "hilo-gen", type = @Type(type = "long"))
+	
+	
+	
+	
+@NotFound(action=NotFoundAction.IGNORE)
+
+@ManyToMany queries
+	
+Hibernate: insert into USER_DETAILS (userName) values (?)
+Hibernate: insert into USER_DETAILS (userName) values (?)
+Hibernate: insert into Address (city) values (?)
+Hibernate: insert into Address (city) values (?)
+Hibernate: insert into Address (city) values (?)
+Hibernate: insert into USER_DETAILS_Address (userDetails_userId, address_addr_id) values (?, ?)
+Hibernate: insert into USER_DETAILS_Address (userDetails_userId, address_addr_id) values (?, ?)
+Hibernate: insert into USER_DETAILS_Address (userDetails_userId, address_addr_id) values (?, ?)
+Hibernate: insert into USER_DETAILS_Address (userDetails_userId, address_addr_id) values (?, ?)
+
+
+https://howtodoinjava.com/hibernate/hibernate-jpa-cascade-types/
+
+
+
+
+====================================================================================
+
+TPH
+
+One Class
+
+@Entity
+@DiscriminatorValue(value = "Emp")
+@DiscriminatorColumn(name="type",discriminatorType=DiscriminatorType.STRING)
+@Table(name="Employee")
+
+and 
+
+Second Class
+
+@Entity
+@DiscriminatorValue(value = "Reg_Emp")
+@Inheritance(strategy=InheritanceType.SINGLE_TABLE)
+
+
+-------------------------------------------------
+
+TPC
+
+
+@Entity
+@Table(name="Employee")
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)  
+
+--------------
+
+@Entity
+@Table(name="Regular_Employee")
+@Inheritance(strategy=InheritanceType.TABLE_PER_CLASS)
+@AttributeOverrides(value = { @AttributeOverride(column = @Column, name = "id"),@AttributeOverride(column = @Column, name = "name") })
+
+-------------------------------------------------
+
+TPS
+
+@Entity
+@Table(name="Employee")
+@Inheritance(strategy = InheritanceType.JOINED)  
+
+================================================================================
+
+Transient, Persistent and Detached Objects
+
+Employee employee1 = (Employee) session.get(Employee.class, 1);
+employee1.setName("vicky");
+
+
+query result :-
+
+Hibernate: select employee0_.id as id1_0_0_, employee0_.name as name2_0_0_ from Employee employee0_ where employee0_.id=?
+Hibernate: update Employee set name=? where id=?
+
+
+https://www.youtube.com/watch?v=T02FicxK_aY&index=26&list=PL4AFF701184976B25
+
+--------------------------
+
+@org.hibernate.annotation.Entity(selectBeforeUpdate=true)
